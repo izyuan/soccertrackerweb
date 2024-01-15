@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Statistics</title>
+</head>
+
+<body>
+
+    <h1>Statistics</h1>
+
+    <h2>Daily Totals</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Total Time</th>
+                {% for category in categories %}
+                <th>{{ category.name }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for date, total in daily_totals.items() %}
+            <tr>
+                <td>{{ date }}</td>
+                <td>{{ total  }} mins</td>
+                {% for category in categories %}
+                <td>{{ category_times[date][category.name] }} mins</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Overall Statistics</h2>
+    <p>Total Time: {{ total_time }}</p>
+    <p>Number of Days: {{ num_days }}</p>
+    <p>Average Time per Day: {{ average_time_per_day }}</p>
+    <p>Average Time per Week: {{ average_time_per_week }}</p>
+    <p>Average Time per Month: {{ average_time_per_month }}</p>
+
+    <h3>Percentage of Time Spent on each Category</h3>
+    <ul>
+        {% for category, percentage in average_time_per_category.items() %}
+        <li>{{ category }}: {{ '{:.2f}%'.format(percentage) }}</li>
+        {% endfor %}
+
+        <a href="{{ url_for('index') }}" class="btn btn-primary">Back</a>
+
+        <h2>Reset Data</h2>
+        <p>Click the button below to reset all training data.</p>
+
+        <form id="resetForm" method="post" action="{{ url_for('reset_logs') }}">
+            <button type="button" onclick="confirmReset()">Reset Data</button>
+        </form>
+
+        <script>
+            function confirmReset() {
+                var confirmReset = confirm("Are you sure you want to reset all training data?");
+                if (confirmReset) {
+                    document.getElementById("resetForm").submit();
+                }
+            }
+        </script>
+
+        <a href="{{ url_for('index') }}" class="btn btn-primary">Back</a>
+</body>
+
+</html>

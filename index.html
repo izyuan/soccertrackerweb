@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IM GONNA CARRY THE BOATS</title>
+</head>
+
+<body>
+    <h1>Soccer Training Tracker</h1>
+    <p>Welcome, {{ current_user.username }}! Are you going to carry the boats today?</p>
+
+
+    <form action="/add_training_record" method="post">
+        <label for="time_spent">Time Spent (minutes):</label>
+        <input type="number" step="0.01" name="time_spent" required>
+    
+        <label for="drill">Select Drill:</label>
+        <select name="drill" required>
+            {% for drill in drills %}
+            <option value="{{ drill.id }}">{{ drill.name }}</option>
+            {% endfor %}
+        </select>
+    
+        <label for="training_date">Training Date:</label>
+        <input type="date" name="training_date" required>
+    
+        <button type="submit">Log Session</button>
+    </form>
+
+    <h2>Exercise</h2>
+    <form action="/add_drill" method="post">
+        <label for="drill_name">Drill Name:</label>
+        <input type="text" name="drill_name" required>
+
+
+        <label for="category_id">Category:</label>
+        <select name="category_id" required>
+            {% for category in categories %}
+            <option value="{{ category.id }}">{{ category.name }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit">Add Drill</button>
+    </form>
+
+    <p><a href="{{ url_for('statistics') }}">View Statistics</a></p>
+
+
+    {% if current_user.is_authenticated %}
+    <a href="{{ url_for('logout') }}">Logout</a>
+    {% else %}
+    <p>You are not logged in.</p>
+    {% endif %}
+
+
+</body>
+
+</html>
